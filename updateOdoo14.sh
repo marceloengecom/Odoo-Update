@@ -69,7 +69,7 @@ Endereço IP: $ODOO_IP
 "
 
 while true; do
-        echo "\Se alguma informação acima não estiver correta, ajuste os dados no próprio script."
+        echo "Se alguma informação acima não estiver correta, ajuste os dados no próprio script."
         read -p 'As informações estão corretas? Deseja continuar? (s/n)' sn
         case $sn in
         [Ss]*) break ;;
@@ -97,7 +97,7 @@ sudo apt clean
 
 echo -e "\n*** UPDATE ODOO FROM GITHUB ***"
 
-if [-e "$ODOO_DIR_SERVER"]; then
+if [ -e "$ODOO_DIR_SERVER" ]; then
         cd $ODOO_DIR_SERVER
         sudo git pull
 else
@@ -114,7 +114,7 @@ fi
 
 echo -e "\n*** UPDATE TRUSTCODE MODULES FROM GITHUB ***"
 
-if [-e "$ODOO_DIR_TRUSTCODE"]; then
+if [ -e "$ODOO_DIR_TRUSTCODE" ]; then
         cd $ODOO_DIR_TRUSTCODE
         sudo git pull
 else
@@ -131,7 +131,7 @@ fi
 
 echo -e "\n*** UPDATE OCA MODULES FROM GITHUB ***"
 
-if [-e "$ODOO_DIR_OCA/account-financial-tools"]; then
+if [ -e "$ODOO_DIR_OCA/account-financial-tools" ]; then
         cd $ODOO_DIR_OCA/account-financial-tools
         sudo git pull
 else
@@ -146,7 +146,7 @@ else
         done
 fi
 
-if [-e "$ODOO_DIR_OCA/server-ux"]; then
+if [ -e "$ODOO_DIR_OCA/server-ux" ]; then
         cd $ODOO_DIR_OCA/server-ux
         sudo git pull
 else
@@ -161,7 +161,7 @@ else
         done
 fi
 
-if [-e "$ODOO_DIR_OCA/mis-builder"]; then
+if [ -e "$ODOO_DIR_OCA/mis-builder"]; then
         cd $ODOO_DIR_OCA/mis-builder
         sudo git pull
 else
@@ -176,7 +176,7 @@ else
         done
 fi
 
-if [-e "$ODOO_DIR_OCA/reporting-engine"]; then
+if [ -e "$ODOO_DIR_OCA/reporting-engine" ]; then
         cd $ODOO_DIR_OCA/reporting-engine
         sudo git pull
 else
@@ -191,7 +191,7 @@ else
         done
 fi
 
-if [-e "$ODOO_DIR_OCA/contracts"]; then
+if [ -e "$ODOO_DIR_OCA/contracts" ]; then
         cd $ODOO_DIR_OCA/contracts
         sudo git pull
 else
