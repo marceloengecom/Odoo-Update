@@ -155,10 +155,10 @@ echo -e "\n*** Change to user Odoo ***"
 sudo su - $ODOO_USER -s /bin/bash
 
 echo -e "\n*** Update database ***"
-sudo $ODOO_DIR_SERVER/odoo-bin --config /etc/${ODOO_CONFIG_FILE} --update=all --database=${ODOO_DATABASE} --stop-after-init
+$ODOO_DIR_SERVER/odoo-bin --config /etc/${ODOO_CONFIG_FILE} --update=all --database=${ODOO_DATABASE} --stop-after-init
 
 echo -e "\n*** Exit Odoo user ***"
-sudo exit
+exit
 
 echo -e "\n*** Start Odoo service***"
 sudo systemctl start $ODOO_SERVICE
