@@ -9,18 +9,18 @@
 #
 ##############################################################################################################
 
-echo -e "\n*** INFORME OS PARÂMETROS BÁSICOS DO ODOO ***"
+echo -e "\n\n*** INFORME OS PARÂMETROS BÁSICOS DO ODOO ***\n\n"
 
-echo "Informe o nome do seu usuário Odoo (ex: odoo): " read ODOO_USER
-echo "Informe a versão do seu Odoo (ex: 14.0): " read ODOO_VERSION
-echo "Informe a porta do seu Odoo (ex: 8069): " read ODOO_PORT
-echo "Informe o nome do  banco de dados Odoo (ex: empresa_xyz): " read ODOO_DATABASE
+read -p 'Informe o nome do seu usuário Odoo (ex: odoo): ' ODOO_USER
+read -p 'Informe a versão do seu Odoo (ex: 14.0): ' ODOO_VERSION
+read -p 'Informe a porta do seu Odoo (ex: 8069): ' ODOO_PORT
+read -p 'Informe o nome do  banco de dados Odoo (ex: empresa_xyz): ' ODOO_DATABASE
 
 # Global Variables
-ODOO_USER=${ODOO_USER^^}
-ODOO_VERSION=${ODOO_VERSION^^}
-ODOO_PORT=${ODOO_PORT^^}
-ODOO_DATABASE=${ODOO_DATABASE^}
+ODOO_USER=$ODOO_USER
+ODOO_VERSION=$ODOO_VERSION
+ODOO_PORT=$ODOO_PORT
+ODOO_DATABASE=$ODOO_DATABASE
 
 # Fixed variables
 ODOO_DIR="/opt/$ODOO_USER"
@@ -46,6 +46,7 @@ Informações para atualização do Odoo:
 Usuário Odoo: $ODOO_USER
 Versão Odoo: $ODOO_VERSION
 Porta Odoo: $ODOO_PORT
+Banco de dados Odoo: $ODOO_DATABASE
 
 *** Se alguma pasta não estiver correta, confira os valores digitados.
 "
@@ -67,7 +68,7 @@ Endereço IP: $ODOO_IP
 "
 
 while true; do
-        read -p "As informações estão corretas? Deseja continuar? (s/n)"
+        read -p 'As informações estão corretas? Deseja continuar? (s/n)' sn
         case $sn in
         [Ss]*) break ;;
         [Nn]*) exit ;;
