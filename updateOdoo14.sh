@@ -161,7 +161,7 @@ else
         done
 fi
 
-if [ -e "$ODOO_DIR_OCA/mis-builder"]; then
+if [ -e "$ODOO_DIR_OCA/mis-builder" ]; then
         cd $ODOO_DIR_OCA/mis-builder
         sudo git pull
 else
