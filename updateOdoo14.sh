@@ -135,7 +135,7 @@ if [ -e "$ODOO_DIR_OCA/account-financial-tools" ]; then
         cd $ODOO_DIR_OCA/account-financial-tools
         sudo git pull
 else
-    echo "A pasta ${ODOO_DIR_OCA/account-financial-tools} não existe"
+    echo "A pasta ${ODOO_DIR_OCA}/account-financial-tools não existe"
         while true; do
                 read -p 'Continuar? (s/n)' sn
                 case $sn in
@@ -150,7 +150,7 @@ if [ -e "$ODOO_DIR_OCA/server-ux" ]; then
         cd $ODOO_DIR_OCA/server-ux
         sudo git pull
 else
-    echo "A pasta ${ODOO_DIR_OCA/server-ux} não existe"
+    echo "A pasta ${ODOO_DIR_OCA}/server-ux não existe"
         while true; do
                 read -p 'Continuar? (s/n)' sn
                 case $sn in
@@ -165,7 +165,7 @@ if [ -e "$ODOO_DIR_OCA/mis-builder" ]; then
         cd $ODOO_DIR_OCA/mis-builder
         sudo git pull
 else
-    echo "A pasta ${ODOO_DIR_OCA/mis-builder} não existe"
+    echo "A pasta ${ODOO_DIR_OCA}/mis-builder não existe"
         while true; do
                 read -p 'Continuar? (s/n)' sn
                 case $sn in
@@ -180,7 +180,7 @@ if [ -e "$ODOO_DIR_OCA/reporting-engine" ]; then
         cd $ODOO_DIR_OCA/reporting-engine
         sudo git pull
 else
-    echo "A pasta ${ODOO_DIR_OCA/reporting-engine} não existe"
+    echo "A pasta ${ODOO_DIR_OCA}/reporting-engine não existe"
         while true; do
                 read -p 'Continuar? (s/n)' sn
                 case $sn in
@@ -195,7 +195,7 @@ if [ -e "$ODOO_DIR_OCA/contracts" ]; then
         cd $ODOO_DIR_OCA/contracts
         sudo git pull
 else
-    echo "A pasta ${ODOO_DIR_OCA/contracts} não existe"
+    echo "A pasta ${ODOO_DIR_OCA}/contracts não existe"
         while true; do
                 read -p 'Continuar? (s/n)' sn
                 case $sn in
@@ -213,14 +213,8 @@ fi
 echo -e "\n*** Stop Odoo service***"
 sudo systemctl stop $ODOO_SERVICE
 
-echo -e "\n*** Change to user Odoo ***"
-sudo su - $ODOO_USER -s /bin/bash
-
-echo -e "\n*** Update database ***"
-$ODOO_DIR_SERVER/odoo-bin --config ${ODOO_CONFIG_FILE} --update=all --database=${ODOO_DATABASE} --stop-after-init
-
-echo -e "\n*** Exit Odoo user ***"
-exit
+echo -e "\n*** Update database whith Odoo user ***"
+sudo -u $ODOO_USER bash -c "$ODOO_DIR_SERVER/odoo-bin --config ${ODOO_CONFIG_FILE} --update=all --database=${ODOO_DATABASE} --stop-after-init"
 
 echo -e "\n*** Start Odoo service***"
 sudo systemctl start $ODOO_SERVICE
@@ -231,7 +225,7 @@ sudo systemctl status $ODOO_SERVICE
 echo -e "*** COMMANDS TO CHECK ODOO LOGS:  ***"
 echo -e "*** 'sudo journalctl -u $ODOO_USER' OR 'sudo tail -f /var/log/${ODOO_USER}/${ODOO_CONFIG_FILE}.log' ***"
 
-echo -e "*** OPEN ODOO INSTANCE ON YOUR BROWSER ***"
+echo -e "\n*** OPEN ODOO INSTANCE ON YOUR BROWSER ***\n"
 echo -e "*** ************************************************* ***"
 echo -e "*** IP ADDRESS: $ODOO_IP - PORT: $ODOO_PORT ***"
 echo -e "*** ************************************************* ***"
