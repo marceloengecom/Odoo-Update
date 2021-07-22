@@ -31,7 +31,7 @@ ODOO_DIR_OCA="$ODOO_DIR_CUSTOM/oca"
 
 ODOO_DIR_SERVER="$ODOO_DIR/${ODOO_USER}-server"
 
-ODOO_CONFIG_FILE="${ODOO_USER}-server"
+ODOO_CONFIG_FILE="/etc/${ODOO_USER}-server.conf"
 ODOO_SERVICE="${ODOO_USER}.service"
 
 ODOO_IP="$(hostname -I)"
@@ -48,7 +48,7 @@ Porta Odoo: $ODOO_PORT
 Banco de dados Odoo: $ODOO_DATABASE
 "
 while true; do
-        echo "\nSe alguma informação acima não estiver correta, reinicie o script e informe os valores corretos.\n"
+        echo "Se alguma informação acima não estiver correta, reinicie o script e informe os valores corretos."
         read -p 'As informações estão corretas? Deseja continuar? (s/n)' sn
         case $sn in
         [Ss]*) break ;;
@@ -63,12 +63,13 @@ Pasta padrão de instalação do Odoo: $ODOO_DIR
 Pasta padrão dos módulos TrustCODE: $ODOO_DIR_TRUSTCODE
 Pasta padrão dos módulos OCA: $ODOO_DIR_OCA
 Pasta padrão de instalação do servidor Odoo: $ODOO_DIR_SERVER
+Arquivo de Configuração: $ODOO_CONFIG_FILE
 Distribuição Linux: $LINUX_DISTRIBUTION
 Endereço IP: $ODOO_IP
 "
 
 while true; do
-        echo "\nSe alguma informação acima não estiver correta, ajuste os dados no próprio script.\n"
+        echo "\Se alguma informação acima não estiver correta, ajuste os dados no próprio script."
         read -p 'As informações estão corretas? Deseja continuar? (s/n)' sn
         case $sn in
         [Ss]*) break ;;
@@ -83,15 +84,7 @@ done
 if [ "$LINUX_DISTRIBUTION" = "Ubuntu" ]; then
         sudo apt update && sudo apt upgrade -y
 else
-        echo "continuar"
-fi
-
-if [ "$?" != "0" ]; then
-        EXIT_STATUS=1
-        echo "${TIMESTAMP} $0: Erro ao atualizar o sistema operacional"
-        exit
-else
-        echo "continuar"
+        echo "A distribuição não é Ubuntu"
 fi
 
 echo -e "LIMPANDO O CACHE DO APT, AGUARDE... \n"
@@ -103,45 +96,114 @@ sudo apt clean
 #--------------------------------------------------
 
 echo -e "\n*** UPDATE ODOO FROM GITHUB ***"
-cd $ODOO_DIR_SERVER
-git pull
 
-if [ "$?" != "0" ]; then
-        EXIT_STATUS=1
-        echo "${TIMESTAMP} $0: \nErro ao atualizar o Odoo! Saindo do script."
-        exit
+if [-e "$ODOO_DIR_SERVER"]; then
+        cd $ODOO_DIR_SERVER
+        sudo git pull
+else
+    echo "A pasta ${ODOO_DIR_SERVER} não existe"
+        while true; do
+                read -p 'Continuar? (s/n)' sn
+                case $sn in
+                [Ss]*) break ;;
+                [Nn]*) exit ;;
+                *) echo "Por favor, responda Sim ou Não." ;;
+                esac
+        done
 fi
 
 echo -e "\n*** UPDATE TRUSTCODE MODULES FROM GITHUB ***"
-cd $ODOO_DIR_TRUSTCODE
-git pull
 
-if [ "$?" != "0" ]; then
-        EXIT_STATUS=1
-        echo "${TIMESTAMP} $0: \nErro ao atualizar o fork da TrustCode! Saindo do script."
-        exit
+if [-e "$ODOO_DIR_TRUSTCODE"]; then
+        cd $ODOO_DIR_TRUSTCODE
+        sudo git pull
+else
+    echo "A pasta ${ODOO_DIR_TRUSTCODE} não existe"
+        while true; do
+                read -p 'Continuar? (s/n)' sn
+                case $sn in
+                [Ss]*) break ;;
+                [Nn]*) exit ;;
+                *) echo "Por favor, responda Sim ou Não." ;;
+                esac
+        done
 fi
 
 echo -e "\n*** UPDATE OCA MODULES FROM GITHUB ***"
-cd $ODOO_DIR_OCA/account-financial-tools
-sudo git pull
 
-cd $ODOO_DIR_OCA/server-ux
-sudo git pull
+if [-e "$ODOO_DIR_OCA/account-financial-tools"]; then
+        cd $ODOO_DIR_OCA/account-financial-tools
+        sudo git pull
+else
+    echo "A pasta ${ODOO_DIR_OCA/account-financial-tools} não existe"
+        while true; do
+                read -p 'Continuar? (s/n)' sn
+                case $sn in
+                [Ss]*) break ;;
+                [Nn]*) exit ;;
+                *) echo "Por favor, responda Sim ou Não." ;;
+                esac
+        done
+fi
 
-cd $ODOO_DIR_OCA/mis-builder
-sudo git pull
+if [-e "$ODOO_DIR_OCA/server-ux"]; then
+        cd $ODOO_DIR_OCA/server-ux
+        sudo git pull
+else
+    echo "A pasta ${ODOO_DIR_OCA/server-ux} não existe"
+        while true; do
+                read -p 'Continuar? (s/n)' sn
+                case $sn in
+                [Ss]*) break ;;
+                [Nn]*) exit ;;
+                *) echo "Por favor, responda Sim ou Não." ;;
+                esac
+        done
+fi
 
-cd $ODOO_DIR_OCA/reporting-engine
-sudo git pull
+if [-e "$ODOO_DIR_OCA/mis-builder"]; then
+        cd $ODOO_DIR_OCA/mis-builder
+        sudo git pull
+else
+    echo "A pasta ${ODOO_DIR_OCA/mis-builder} não existe"
+        while true; do
+                read -p 'Continuar? (s/n)' sn
+                case $sn in
+                [Ss]*) break ;;
+                [Nn]*) exit ;;
+                *) echo "Por favor, responda Sim ou Não." ;;
+                esac
+        done
+fi
 
-cd $ODOO_DIR_OCA/contracts
-sudo git pull
+if [-e "$ODOO_DIR_OCA/reporting-engine"]; then
+        cd $ODOO_DIR_OCA/reporting-engine
+        sudo git pull
+else
+    echo "A pasta ${ODOO_DIR_OCA/reporting-engine} não existe"
+        while true; do
+                read -p 'Continuar? (s/n)' sn
+                case $sn in
+                [Ss]*) break ;;
+                [Nn]*) exit ;;
+                *) echo "Por favor, responda Sim ou Não." ;;
+                esac
+        done
+fi
 
-if [ "$?" != "0" ]; then
-        EXIT_STATUS=1
-        echo "${TIMESTAMP} $0: \nErro ao atualizar os módulos OCA! Saindo do script."
-        exit
+if [-e "$ODOO_DIR_OCA/contracts"]; then
+        cd $ODOO_DIR_OCA/contracts
+        sudo git pull
+else
+    echo "A pasta ${ODOO_DIR_OCA/contracts} não existe"
+        while true; do
+                read -p 'Continuar? (s/n)' sn
+                case $sn in
+                [Ss]*) break ;;
+                [Nn]*) exit ;;
+                *) echo "Por favor, responda Sim ou Não." ;;
+                esac
+        done
 fi
 
 #--------------------------------------------------
@@ -155,7 +217,7 @@ echo -e "\n*** Change to user Odoo ***"
 sudo su - $ODOO_USER -s /bin/bash
 
 echo -e "\n*** Update database ***"
-$ODOO_DIR_SERVER/odoo-bin --config /etc/${ODOO_CONFIG_FILE} --update=all --database=${ODOO_DATABASE} --stop-after-init
+$ODOO_DIR_SERVER/odoo-bin --config ${ODOO_CONFIG_FILE} --update=all --database=${ODOO_DATABASE} --stop-after-init
 
 echo -e "\n*** Exit Odoo user ***"
 exit
