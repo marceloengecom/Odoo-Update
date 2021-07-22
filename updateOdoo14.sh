@@ -9,7 +9,7 @@
 #
 ##############################################################################################################
 
-echo -e "\n\n*** INFORME OS PARÂMETROS BÁSICOS DO ODOO ***\n\n"
+echo -e "\n*** INFORME OS PARÂMETROS BÁSICOS DO ODOO ***\n"
 
 read -p 'Informe o nome do seu usuário Odoo (ex: odoo): ' ODOO_USER
 read -p 'Informe a versão do seu Odoo (ex: 14.0): ' ODOO_VERSION
@@ -41,33 +41,34 @@ LINUX_DISTRIBUTION=$(awk '{ print $1 }' /etc/issue)
 TIMESTAMP=$(/bin/date +%d-%m-%Y_%T)
 
 echo "
-Informações para atualização do Odoo:
-
+INFORMAÇÕES BÁSICAS DO SEU ODOO:
 Usuário Odoo: $ODOO_USER
 Versão Odoo: $ODOO_VERSION
 Porta Odoo: $ODOO_PORT
 Banco de dados Odoo: $ODOO_DATABASE
-
-*** Se alguma pasta não estiver correta, confira os valores digitados.
 "
+while true; do
+        echo "\nSe alguma informação acima não estiver correta, reinicie o script e informe os valores corretos.\n"
+        read -p 'As informações estão corretas? Deseja continuar? (s/n)' sn
+        case $sn in
+        [Ss]*) break ;;
+        [Nn]*) exit ;;
+        *) echo "Por favor, responda Sim ou Não." ;;
+        esac
+done
 
 echo "
-Informações de localização do Odoo:
-
+INFORMAÇÕES DE PASTAS DO ODOO:
 Pasta padrão de instalação do Odoo: $ODOO_DIR
 Pasta padrão dos módulos TrustCODE: $ODOO_DIR_TRUSTCODE
 Pasta padrão dos módulos OCA: $ODOO_DIR_OCA
 Pasta padrão de instalação do servidor Odoo: $ODOO_DIR_SERVER
-
-Arquivo padrão de configuração: $ODOO_CONFIG_FILE
 Distribuição Linux: $LINUX_DISTRIBUTION
 Endereço IP: $ODOO_IP
-
-
-*** Se alguma pasta não estiver correta, mude os dados do script.
 "
 
 while true; do
+        echo "\nSe alguma informação acima não estiver correta, ajuste os dados no próprio script.\n"
         read -p 'As informações estão corretas? Deseja continuar? (s/n)' sn
         case $sn in
         [Ss]*) break ;;
@@ -80,8 +81,8 @@ done
 # Atualizar Sistema Operacional
 #--------------------------------------------------
 if [ "$LINUX_DISTRIBUTION" = "Ubuntu" ]; then
-        sudo apt update && sudo apt upgrade -y &&
-                else
+        sudo apt update && sudo apt upgrade -y
+else
         echo "continuar"
 fi
 
