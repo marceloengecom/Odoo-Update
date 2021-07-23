@@ -191,11 +191,11 @@ else
         done
 fi
 
-if [ -e "$ODOO_DIR_OCA/contracts" ]; then
-        cd $ODOO_DIR_OCA/contracts
+if [ -e "$ODOO_DIR_OCA/contract" ]; then
+        cd $ODOO_DIR_OCA/contract
         sudo git pull
 else
-    echo "A pasta ${ODOO_DIR_OCA}/contracts não existe"
+    echo "A pasta ${ODOO_DIR_OCA}/contract não existe"
         while true; do
                 read -p 'Continuar? (s/n)' sn
                 case $sn in
@@ -205,6 +205,9 @@ else
                 esac
         done
 fi
+
+echo -e "\n*** Setting user to entire Odoo directory***"
+sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 
 #--------------------------------------------------
 # Update dadabase
