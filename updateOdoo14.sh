@@ -98,7 +98,7 @@ curl -X POST \
     -F "name=${ODOO_DATABASE}" \
     -F "backup_format=zip" \
     -o ${BACKUP_DIR}/${ODOO_DATABASE}.$(date +%F).zip \
-    http://${ODOO_IP}:${ODOO_PORT}/web/database/backup
+    http://${ODOO_IP}:8069/web/database/backup
 
 
 # Apagar backup mais antigos que 7 dias
