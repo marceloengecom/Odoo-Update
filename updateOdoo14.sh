@@ -15,12 +15,15 @@ read -p 'Informe o nome do seu usuário Odoo (ex: odoo): ' ODOO_USER
 read -p 'Informe a versão do seu Odoo (ex: 14.0): ' ODOO_VERSION
 read -p 'Informe a porta do seu Odoo (ex: 8069): ' ODOO_PORT
 read -p 'Informe o nome do  banco de dados Odoo (ex: empresa_xyz): ' ODOO_DATABASE
+read -p 'Informe a senha adiministrativa do banco de dados Odoo (ex: Pysql-123456): ' DB_ADMINPASS
 
 # Global Variables
 ODOO_USER=$ODOO_USER
 ODOO_VERSION=$ODOO_VERSION
 ODOO_PORT=$ODOO_PORT
 ODOO_DATABASE=$ODOO_DATABASE
+# Set the superadmin password to postgresql
+DB_ADMINPASS=$DB_ADMINPASS
 
 # Fixed variables
 ODOO_DIR="/opt/$ODOO_USER"
@@ -77,6 +80,31 @@ while true; do
         *) echo "Por favor, responda Sim ou Não." ;;
         esac
 done
+
+
+#--------------------------------------------------
+# Backup Banco de Dados Odoo
+#--------------------------------------------------
+echo -e "\n*** START BACKUP DATABASE ***"
+
+BACKUP_DIR="/var/backups/${ODOO_USER}"
+
+# create a backup directory
+mkdir -p ${BACKUP_DIR}
+
+# create a backup
+curl -X POST \
+    -F "master_pwd=${DB_ADMINPASS}" \
+    -F "name=${ODOO_DATABASE}" \
+    -F "backup_format=zip" \
+    -o ${BACKUP_DIR}/${ODOO_DATABASE}.$(date +%F).zip \
+    http://${ODOO_IP}:${ODOO_PORT}/web/database/backup
+
+
+# Apagar backup mais antigos que 7 dias
+find ${BACKUP_DIR} -type f -mtime +7 -name "${ODOO_DATABASE}.*.zip" -delete
+
+echo -e "\n*** END BACKUP DATABASE ***"
 
 #--------------------------------------------------
 # Atualizar Sistema Operacional
